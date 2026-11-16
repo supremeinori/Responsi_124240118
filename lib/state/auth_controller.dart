@@ -6,12 +6,12 @@ import '../services/session_service.dart';
 
 class AuthController extends ChangeNotifier {
   AuthController({
-    required this._database,
-    required this._sessionService,
+    required this.database,
+    required this.sessionService,
   });
 
-  final AuthDatabase _database;
-  final SessionService _sessionService;
+  final LocalDbService database;
+  final SessionService sessionService;
 
   UserModel? _currentUser;
   bool _isInitialized = false;
@@ -23,7 +23,7 @@ class AuthController extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> restoreSession() async {
-    _currentUser = await _sessionService.getLoggedInUser();
+    _currentUser = await sessionService.getLoggedInUser();
     _isInitialized = true;
     notifyListeners();
   }
@@ -36,14 +36,14 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = await _database.authenticateUser(
+      final user = await database.authenticateUser(
         username: username,
         password: password,
       );
       if (user == null) {
         return 'Username atau password salah.';
       }
-      await _sessionService.saveSession(user);
+      await sessionService.saveSession(user);
       _currentUser = user;
       return null;
     } on AuthException catch (e) {
@@ -65,12 +65,12 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = await _database.registerUser(
+      final user = await database.registerUser(
         name: name,
         username: username,
         password: password,
       );
-      await _sessionService.saveSession(user);
+      await sessionService.saveSession(user);
       _currentUser = user;
       return null;
     } on AuthException catch (e) {
@@ -84,7 +84,7 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    await _sessionService.clearSession();
+    await sessionService.clearSession();
     _currentUser = null;
     notifyListeners();
   }
