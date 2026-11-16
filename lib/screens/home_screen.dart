@@ -184,6 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 TextField(
                   controller: _searchController,
+                  autocorrect: false,
                   textInputAction: TextInputAction.search,
                   onChanged: _onSearchChanged,
                   decoration: InputDecoration(
