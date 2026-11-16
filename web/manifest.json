@@ -1,6 +1,6 @@
 {
-    "name": "latres",
-    "short_name": "latres",
+    "name": "SpaceNews Explorer",
+    "short_name": "SpaceNews",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
